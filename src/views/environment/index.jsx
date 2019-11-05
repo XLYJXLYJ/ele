@@ -216,6 +216,9 @@ class App extends Component {
       endIndicators_null:'',
       //设备列表
       equipmentList: [],
+      warnTimes:'',//报警次数
+      effectiveDeviceNum:'',//报警设备总数
+      warnDeviceNum:'',//有效设备报警总数
       // 选中当前设备
       actionEquipmentListIndex: 0,
       // 12小时折线图数据
@@ -666,9 +669,47 @@ class App extends Component {
         let res = re.data
         if (res.status == 200) {
           let data = res.response
+          console.log(data.deviceList)
+          let length = data.deviceList.length
+          data.deviceList.map((item,index)=>{
+            if(length<7){
+              item['long'] = 1;
+            }
+            else if(length > 6 && length < 13){
+              if(index < 12-length){
+                item['long'] = 1;
+              }else{
+                item['long'] = 0;
+              }
+            }
+            else if(length > 12 && length < 19){
+              if(index<12){
+                item['long'] = 0;
+              }else{
+                item['long'] = 1;
+              }
+            }
+            else if(length > 18 && length < 25){
+              if(index<12){
+                item['long'] = 0;
+              }else{
+                if(index < 24-length){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }
+            }         
+            // item['long'] = 1;
+          })
+         console.log(data.deviceList)
+
           this.setState(
             {
-              equipmentList: data.deviceList
+              equipmentList: data.deviceList,
+              warnTimes:data.warnTimes,
+              effectiveDeviceNum:data.effectiveDeviceNum,
+              warnDeviceNum:data.warnDeviceNum
             },
             () => {
                 // 如果设备未绑定
@@ -683,6 +724,7 @@ class App extends Component {
                         })
                     }
                 }
+                this.initEquipmentList()
                 this.initProportion24th()
             }
           )
@@ -756,7 +798,7 @@ class App extends Component {
   //报警统计
   getWarnStatistic() {
     this.$http
-      .post("/rest/tower/getWarnStatistic", {
+      .post("/rest/elec/getIndicatorWarnTimes", {
         orderProductList: this.state.equipmentList[
           this.state.actionEquipmentListIndex
         ].orderProductList,
@@ -828,50 +870,62 @@ class App extends Component {
                   {
                     this.state.equipmentList.map((item,index) => {
                       return(
-                        <div>
-                        <li className={item.status != 1 ? "app-content-left-li active" : "app-content-left-li"} key={index}>
-                      
-                      <div className="left">
-                        <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                        <p className="one">
-                        {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
-                        </p>
-   
-                        <div className="two">
-                        <MarqueeWrap
-                            title={item.address || '-'}
-                        />
-                        </div>
-                        <p className="three">设备码 {item.deviceCode}</p>
-                        {/* <p>{item.indicatorList}</p> */}
-                      </div>
-                      <div className="right">
-                        <ul>
-                          {
-                            item.indicatorList.map((item1,index1) => {
-                              return(
-                                <li  key={index1} className={item1.status != 0 ? "left-supervise-list active" : "left-supervise-list"
-                                }>
-                                  <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
-                                  <p className="three">
-                                  <CountUp
-                                    start={0}
-                                    end={item1.indicatorValue}
-                                    decimals={0}
-                                    duration={2.5}
-                                    useEasing={true}
-                                    useGrouping={true}
-                                  />
-                                  <span className="four">v</span></p>
-                                  <p className="five">{item1.statusName}</p>
-                                </li>
-                              )
-                            })
-                          }
-                        </ul>
-                      </div>
+                      <div key={index}>
+                        <li className={item.status != 1 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
+                          <div className="left">
+                            <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                            <p className="one">
+                            {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                            </p>
+      
+                            <div className="two">
+                            <MarqueeWrap
+                                title={item.address || '-'}
+                            />
+                            </div>
+                            <p className="three">设备码 {item.deviceCode}</p>
+                            {/* <p>{item.indicatorList}</p> */}
+                          </div>
+                          <div className="right">
+                            <ul>
+                              {
+                                item.indicatorList.map((item1,index1) => {
+                                  return(
+                                    <li  key={index1} className={item1.status != 0 ? "left-supervise-list active" : "left-supervise-list"}>
+                                      <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                      <p className="three">
+                                        <CountUp
+                                          start={0}
+                                          end={item1.indicatorValue}
+                                          decimals={0}
+                                          duration={2.5}
+                                          useEasing={true}
+                                          useGrouping={true}
+                                        />
+                                        <span className="four">v</span></p>
+                                        <p className="five">{item1.statusName}</p>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
+                            </div>
+                          </li>
 
-                    </li>
+                          <li  className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
+                            <div className="left">
+                              <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                              <p className="one"> {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
+                              <div className="two">       
+                              <MarqueeWrap
+                                  title={item.address || '-'}
+                              /></div>
+                              <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}°C <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}mA <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}kW</p>
+                            </div>
+                            <p className="voltage">{item.indicatorList[0].indicatorValue} <span>V</span></p>
+                            <p className="current">{item.indicatorList[1].indicatorValue} <span>A</span></p>
+                          </li>
+
                         </div>
 
                       )
@@ -880,7 +934,7 @@ class App extends Component {
                   }
                   
 
-                  <li className='app-content-left-li'>
+                  {/* <li className='app-content-left-li'>
                     <div className="left">
                       <img src={require("../../assets/images/cdz.png")}  alt=""/>
                       <p className="one">1号用电检测系统</p>
@@ -977,7 +1031,7 @@ class App extends Component {
                       </ul>
                     </div>
 
-                  </li>
+                  </li> */}
             
 
         
@@ -1082,27 +1136,7 @@ class App extends Component {
 
                   </li> */}
           
-                  <li className='app-content-left-li'  style={{width: `49.3%`}}>
-                    <div className="left">
-                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                      <p className="one">1号用电检测系统</p>
-                      <p className="two">广东省深圳市南山区西丽曙光社区茶光路以北</p>
-                      <p className="three">设备码 X81YYJX9</p>
-                    </div>
-                    <p className="voltage">238 <span>V</span></p>
-                    <p className="current">6 <span>A</span></p>
-                  </li>
-            
-                  <li className='app-content-left-li' style={{width: `49.3%`}}>
-                    <div className="left">
-                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                      <p className="one">1号用电检测系统</p>
-                      <p className="two">广东省深圳市南山区西丽曙光社区茶光路以北</p>
-                      <p className="three">设备码 X81YYJX9</p>
-                    </div>
-                    <p className="voltage">238 <span>V</span></p>
-                    <p className="current">6 <span>A</span></p>
-                  </li>
+  
              
                 {/*<li style={{width: `49.3%`}}>1</li>
                 <li style={{width: `49.3%`}}>1</li>
@@ -1117,31 +1151,49 @@ class App extends Component {
               <div className="warn-day">
                 <div className="warn-day-num">
                 {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast') ? 
-                    (!this.state.warnStatistic.monitorDays ? (
+                    (!this.state.effectiveDeviceNum ? (
                         '-'
                     ) : (
-                        <CountUp
+                      <span>       
+                         <CountUp
                             start={0}
-                            end={this.state.warnStatistic.monitorDays}
+                            end={this.state.warnDeviceNum}
                             decimals={0}
                             duration={2.5}
                             useEasing={true}
                             useGrouping={true}
                         />
-                        )):'-'
+                      
+
+                        <span style={{fontSize:`20px`}}>
+                        /
+                        <CountUp
+                            start={0}
+                            end={this.state.effectiveDeviceNum}
+                            decimals={0}
+                            duration={2.5}
+                            useEasing={true}
+                            useGrouping={true}
+                        />
+                        
+                        </span>
+                      </span>
+                )
+                        
+                        ):'-'
                     }
                 </div>
-                <div className="warn-day-name">监测天数</div>
+                <div className="warn-day-name">报警/设备总数</div>
               </div>
               <div className="warn-time">
                 <div className="warn-time-num">
                 {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
-                    (!this.state.warnStatistic.alarmTimes ? (
+                    (!this.state.warnTimes? (
                       '-'
                     ) : (
                         <CountUp
                             start={0}
-                            end={this.state.warnStatistic.alarmTimes}
+                            end={this.state.warnTimes}
                             decimals={0}
                             duration={2.5}
                             useEasing={true}
