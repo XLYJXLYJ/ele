@@ -135,6 +135,18 @@ body,
   }
 }
 
+
+.swiper-container {
+  background: rgb(14, 13, 13);
+  overflow: hidden;
+}  
+.swiper-slide{
+  float: left;
+  width:100%;
+
+}
+
+
 .app-wrap {
   display: flex;
   flex-direction: column;
@@ -384,7 +396,7 @@ body,
           }
 
           .app-content-left-li-1{
-            width: px-rem(1482);
+            width: px-rem(1470);
             height: px-rem(282);
             margin-bottom: px-rem(22);
             display: inline-block;

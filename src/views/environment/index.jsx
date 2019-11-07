@@ -7,6 +7,9 @@ import solarLunar from "../../assets/js/solarlunar"
 import * as config from "../../config/index"
 import * as tools from "../../tools/index"
 
+import Swiper from 'swiper/js/swiper.js'
+import 'swiper/css/swiper.min.css'
+
 import "./index.scss"
 
 // 跑马灯组件
@@ -216,6 +219,7 @@ class App extends Component {
       endIndicators_null:'',
       //设备列表
       equipmentList: [],
+      equipmentListSlice:[], 
       warnTimes:'',//报警次数
       effectiveDeviceNum:'',//报警设备总数
       warnDeviceNum:'',//有效设备报警总数
@@ -242,6 +246,17 @@ class App extends Component {
     this.updateLocalTime()
   }
 
+  componentDidMount(){
+    new Swiper('.swiper-container', {
+      autoplay:true,
+      delay:36000,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      observer: true,
+      observeParents: true,
+      setWrapperSize: true,
+    }) 
+  }
   //初始化24th 设备告警次数
   initProportion24th() {
     this.proportion24th && this.proportion24th.destroy()
@@ -255,7 +270,7 @@ class App extends Component {
     let startAngle = -Math.PI/2 - Math.PI //开始角度
     console.log(this.proportionDom)
     if(this.proportionDom.current != null){
-      let height = this.proportionDom.current.offsetHeight+20
+      var height = this.proportionDom.current.offsetHeight+20
     }
 
     let indexVal = this.state.equipmentList[this.state.actionEquipmentListIndex].orderProductList //选中值
@@ -603,6 +618,7 @@ class App extends Component {
   initEquipmentList() {
     // 没有数据情况下
     if (!this.state.equipmentList.length) {
+      console.log(123)
       this.setState({
         actionEquipmentListIndex: 0,
         equipmentList: []
@@ -613,6 +629,7 @@ class App extends Component {
       return null
     }
     if (this.equipmentListTime) {
+      console.log(456)
       return null
     }
     let updateTime = this.state.equipmentList.length == 1 ? 60 : 30
@@ -621,6 +638,7 @@ class App extends Component {
     this.updateDate('init')
     this.updateIndicators(updateTime)//更新指数
     this.equipmentListTime = setInterval(() => {
+      console.log(789)
       if (
         this.state.actionEquipmentListIndex <
         this.state.equipmentList.length - 1
@@ -668,44 +686,104 @@ class App extends Component {
       .then(re => {
         let res = re.data
         if (res.status == 200) {
+
+
+
           let data = res.response
           console.log(data.deviceList)
           let length = data.deviceList.length
-          data.deviceList.map((item,index)=>{
-            if(length<7){
-              item['long'] = 1;
-            }
-            else if(length > 6 && length < 13){
-              if(index < 12-length){
-                item['long'] = 1;
-              }else{
-                item['long'] = 0;
-              }
-            }
-            else if(length > 12 && length < 19){
-              if(index<12){
-                item['long'] = 0;
-              }else{
-                item['long'] = 1;
-              }
-            }
-            else if(length > 18 && length < 25){
-              if(index<12){
-                item['long'] = 0;
-              }else{
-                if(index < 24-length){
-                  item['long'] = 1;
-                }else{
-                  item['long'] = 0;
+
+          //数据分组-每12个一组
+          let curSwiperDataArr=[];
+          let groupSize = 12;
+          for (let i = 0, j = length; i < j; i += groupSize) {
+            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
+          }
+          console.log(curSwiperDataArr)
+
+          curSwiperDataArr.map((item,index) => {
+              let iLength = item.length
+              item.map((item1,index1)=>{
+                if(iLength<7){
+                  item1['long'] = 1;
                 }
+                else if(iLength > 6 && iLength < 13){
+                  if(index1 < 12-iLength){
+                    item1['long'] = 1;
+                  }else{
+                    item1['long'] = 0;
+                  }
+                }
+                console.log(this.state.actionEquipmentListIndex)
+                console.log(index1)
+                if(this.state.actionEquipmentListIndex<12){
+                  if(index1 == this.state.actionEquipmentListIndex){
+                    item1['shine'] = 1;
+                  }else{
+                    item1['shine'] = 0;
+                  }
+                }else{
+                  this.state.actionEquipmentListIndex = this.state.actionEquipmentListIndex % 12
+                  if(index1 == this.state.actionEquipmentListIndex){
+                    item1['shine'] = 1;
+                  }else{
+                    item1['shine'] = 0;
+                  }
+                }
+
+                // item['long'] = 1;
               }
-            }         
-            // item['long'] = 1;
+              )
           })
+
+          //数据分组-每6个一组
+          // let curSwiperDataArr=[];
+          // let groupSize = 6;
+          // for (let i = 0, j = length; i < j; i += groupSize) {
+          //   curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
+          // }
+          // console.log(curSwiperDataArr)
+
+          // curSwiperDataArr.map((item,index) => {
+          //     let iLength = item.length
+          //     item.map((item1,index1)=>{
+          //       if(iLength<3){
+          //         item1['long'] = 1;
+          //       }
+          //       else if(iLength > 2 && iLength < 7){
+          //         if(index1 < 6-iLength){
+          //           item1['long'] = 1;
+          //         }else{
+          //           item1['long'] = 0;
+          //         }
+          //       }
+          //     }
+          //     )
+          // })
+
+          console.log(curSwiperDataArr)
+
+          // data.deviceList.map((item,index)=>{
+          //   if(length<7){
+          //     item['long'] = 1;
+          //   }
+          //   else if(length > 6 && length < 13){
+          //     if(index < 12-length){
+          //       item['long'] = 1;
+          //     }else{
+          //       item['long'] = 0;
+          //     }
+          //   }
+        
+          //   // item['long'] = 1;
+          // })
+
+
          console.log(data.deviceList)
 
           this.setState(
             {
+              equipmentListSlice: curSwiperDataArr,
               equipmentList: data.deviceList,
               warnTimes:data.warnTimes,
               effectiveDeviceNum:data.effectiveDeviceNum,
@@ -844,11 +922,9 @@ class App extends Component {
     }, 1000)
   }
   render() {
-    const ulStyle = {
-      top: -260
-    };
     return (
       <div className="app-wrap">
+
         <div className="app-header">
           <div className="app-container">
             <div className="app-header-info">
@@ -864,285 +940,90 @@ class App extends Component {
             </div>
           </div>
         </div>
+
+
+
+
+
+
         <div className="app-content">
           <div className="app-content-left">
-              <ul className='app-content-left-ul'>
+            <div className="swiper-container">
+                <div className="swiper-wrapper">
                   {
-                    this.state.equipmentList.map((item,index) => {
+                    this.state.equipmentListSlice.map((itemMain,intexMain) => {
                       return(
-                      <div key={index}>
-                        <li className={item.status != 1 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
-                          <div className="left">
-                            <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                            <p className="one">
-                            {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
-                            </p>
-      
-                            <div className="two">
-                            <MarqueeWrap
-                                title={item.address || '-'}
-                            />
+                        <div className="swiper-slide" key={intexMain}>
+                        <ul className='app-content-left-ul'>
+                        {
+                          itemMain.map((item,index) => {
+                            return(
+                            <div key={index}>
+                              <li className={item.status != 1 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
+                                <div className="left">
+                                  <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                                  <p className="one">
+                                  {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                                  </p>
+            
+                                  <div className="two">
+                                  <MarqueeWrap
+                                      title={item.address || '-'}
+                                  />
+                                  </div>
+                                  <p className="three">设备码 {item.deviceCode}</p>
+                                  {/* <p>{item.indicatorList}</p> */}
+                                </div>
+                                <div className="right">
+                                  <ul>
+                                    {
+                                      item.indicatorList.map((item1,index1) => {
+                                        return(
+                                          <li  key={index1} className={item1.status != 0 ? "left-supervise-list active" : "left-supervise-list"}>
+                                            <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                            <p className="three">
+                                              <CountUp
+                                                start={0}
+                                                end={item1.indicatorValue}
+                                                decimals={0}
+                                                duration={2.5}
+                                                useEasing={true}
+                                                useGrouping={true}
+                                              />
+                                              <span className="four">v</span></p>
+                                              <p className="five">{item1.statusName}</p>
+                                            </li>
+                                          )
+                                        })
+                                      }
+                                    </ul>
+                                </div>
+                              </li>
+    
+                              <li  className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
+                                <div className="left">
+                                  <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                                  <p className="one"> {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
+                                  <div className="two">       
+                                  <MarqueeWrap
+                                      title={item.address || '-'}
+                                  /></div>
+                                  <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}°C <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}mA <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}kW</p>
+                                </div>
+                                <p className="voltage">{item.indicatorList[0].indicatorValue} <span>V</span></p>
+                                <p className="current">{item.indicatorList[1].indicatorValue} <span>A</span></p>
+                              </li>
                             </div>
-                            <p className="three">设备码 {item.deviceCode}</p>
-                            {/* <p>{item.indicatorList}</p> */}
-                          </div>
-                          <div className="right">
-                            <ul>
-                              {
-                                item.indicatorList.map((item1,index1) => {
-                                  return(
-                                    <li  key={index1} className={item1.status != 0 ? "left-supervise-list active" : "left-supervise-list"}>
-                                      <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
-                                      <p className="three">
-                                        <CountUp
-                                          start={0}
-                                          end={item1.indicatorValue}
-                                          decimals={0}
-                                          duration={2.5}
-                                          useEasing={true}
-                                          useGrouping={true}
-                                        />
-                                        <span className="four">v</span></p>
-                                        <p className="five">{item1.statusName}</p>
-                                      </li>
-                                    )
-                                  })
-                                }
-                              </ul>
-                            </div>
-                          </li>
-
-                          <li  className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
-                            <div className="left">
-                              <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                              <p className="one"> {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
-                              <div className="two">       
-                              <MarqueeWrap
-                                  title={item.address || '-'}
-                              /></div>
-                              <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}°C <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}mA <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}kW</p>
-                            </div>
-                            <p className="voltage">{item.indicatorList[0].indicatorValue} <span>V</span></p>
-                            <p className="current">{item.indicatorList[1].indicatorValue} <span>A</span></p>
-                          </li>
-
+                            )
+                          })
+                              }
+                          </ul>
                         </div>
-
                       )
-
                     })
                   }
-                  
-
-                  {/* <li className='app-content-left-li'>
-                    <div className="left">
-                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                      <p className="one">1号用电检测系统</p>
-                      <p className="two">广东省深圳市南山区西丽曙光社区茶光路以北</p>
-                      <p className="three">设备码 X81YYJX9</p>
-                    </div>
-                    <div className="right">
-                      <ul>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                           <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                           <span className="four">v</span></p>
-                          <p className="five">正常</p>
-
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </li> */}
-            
-
-        
-                 
-          
-                  {/* <li className='app-content-left-li'>
-                    <div className="left">
-                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                      <p className="one">1号用电检测系统</p>
-                      <p className="two">广东省深圳市南山区西丽曙光社区茶光路以北</p>
-                      <p className="three">设备码 X81YYJX9</p>
-                    </div>
-                    <div className="right">
-                      <ul>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                           <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                           <span className="four">v</span></p>
-                          <p className="five">正常</p>
-
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                        <li>
-                          <p className="one">电压<span className="two">？</span></p>
-                          <p className="three">             
-                          <CountUp
-                            start={238}
-                            end={456}
-                            decimals={0}
-                            duration={2.5}
-                            useEasing={true}
-                            useGrouping={true}
-                          />
-                          <span className="four">v</span></p>
-                          <p className="five">正常</p>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </li> */}
-          
-  
-             
-                {/*<li style={{width: `49.3%`}}>1</li>
-                <li style={{width: `49.3%`}}>1</li>
-                <li style={{width: `49.3%`}}>1</li>
-                <li style={{width: `49.3%`}}>1</li> */}
-              </ul>
+                </div>
+            </div>
           </div>
 
           <div className="app-content-right">
