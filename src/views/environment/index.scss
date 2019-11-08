@@ -137,7 +137,6 @@ body,
 
 
 .swiper-container {
-  background: rgb(14, 13, 13);
   overflow: hidden;
 }  
 .swiper-slide{
@@ -225,7 +224,7 @@ body,
           display: none!important;
         }
           .app-content-left-li{
-            width: px-rem(2984);
+            width: px-rem(2964);
             height: px-rem(282);
             margin-bottom: px-rem(22);
             display: inline-block;
@@ -255,8 +254,8 @@ body,
                     width: px-rem(48);
                     height: px-rem(48);
                     position:relative;
-                    left: px-rem(-40);
-                    top: px-rem(8);
+                    left: px-rem(0);
+                    top: px-rem(7);
                   }
                   .active1{
                     display: none;
@@ -396,7 +395,7 @@ body,
           }
 
           .app-content-left-li-1{
-            width: px-rem(1470);
+            width: px-rem(1472);
             height: px-rem(282);
             margin-bottom: px-rem(22);
             display: inline-block;
@@ -426,8 +425,8 @@ body,
                     width: px-rem(48);
                     height: px-rem(48);
                     position:relative;
-                    left: px-rem(-40);
-                    top: px-rem(8);
+                    left: px-rem(0);
+                    top: px-rem(7);
                   }
                   .active1{
                     display: none;
@@ -464,10 +463,11 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1214);
+              left: px-rem(1204);
               top: px-rem(70);
+
               span{
-                font-size: px-rem(30);
+                // font-size: px-rem(60);
                 height: px-rem(40);
                 font-weight: 400;
                 color: #fff;
@@ -485,7 +485,7 @@ body,
               left: px-rem(1330);
               top: px-rem(70);
               span{
-                font-size: px-rem(30);
+                // font-size: px-rem(30);
                 height: px-rem(40);
                 font-weight: 400;
                 color: #fff;

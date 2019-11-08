@@ -201,36 +201,20 @@ class App extends Component {
     this.proportion24th = null //24小时报警次数饼图对象
 
     this.state = {
-      showTaji: 0, //初始化是否显示塔机
-
       projectName: "", // 项目名称
       logo: "", // logo图片
-      // projectNameStatus: true, // 项目名称样式
       slogan: "", // 头部公告
       localTime: "", // 本地时间
       oterInfoStatus: "", // 底部提示信息  noNetwork 无网 updateVer 版本更新networkAbnormal 网络异常serverPast 服务过期
       yunPingName: "", // 云屏服务名称
       yunPingCode: "", // 云屏设备码
-      //指标数据
-      indicators: "",
-      startIndicators: "", // 开始指标数据
-      startIndicators_90:"", // 解决旋转问题
-      endIndicators: "",
-      endIndicators_null:'',
-      //设备列表
-      equipmentList: [],
-      equipmentListSlice:[], 
+      equipmentList: [], //设备列表
+      equipmentListSlice:[], //处理后的设备列表数据
       warnTimes:'',//报警次数
-      effectiveDeviceNum:'',//报警设备总数
-      warnDeviceNum:'',//有效设备报警总数
-      // 选中当前设备
-      actionEquipmentListIndex: 0,
-      // 12小时折线图数据
-      brokenLineList: null,
-      // 7天平均数值数据
-      sevenDays: null,
-      // 报警统计
-      warnStatistic: {},
+      effectiveDeviceNum:'', //报警设备总数
+      warnDeviceNum:'', //有效设备报警总数
+      actionEquipmentListIndex: 0, // 选中当前设备
+      warnStatistic: {}, // 报警统计
     }
     // 18414220100155144  18414220100155130 huanjingjiance
     let deviceCode = tools.getUrlParam("deviceCode") || "yongdian"
@@ -261,7 +245,6 @@ class App extends Component {
   initProportion24th() {
     this.proportion24th && this.proportion24th.destroy()
 
-    
     let _r = 255
     let _lineR = 255
     function pxRem(num) {
@@ -636,7 +619,6 @@ class App extends Component {
     //切换时间
     // let updateTime = 200
     this.updateDate('init')
-    this.updateIndicators(updateTime)//更新指数
     this.equipmentListTime = setInterval(() => {
       console.log(789)
       if (
@@ -657,22 +639,11 @@ class App extends Component {
           this.updateDate
         )
       }
-      this.updateIndicators(updateTime)
+
     }, 1000 * updateTime)
 
   }
-  // 中途更新指标数据
-  updateIndicators(time)  {
-    if(this.state.indicators.newInd && this.state.indicators.oldInd) {
-        setTimeout(() => {
-          this.setState({
-            startIndicators: this.state.indicators.newInd,
-            // endIndicators_90:parseInt(this.state.indicators.oldInd[4].indicatorValue) + 90,
-            endIndicators: this.state.indicators.oldInd
-          })
-        }, (1000 * time) / 2)
-    }
-  }
+
   //更新接口数据
   updateDate(type) {
     !type && this.getBaseInfo()
@@ -686,54 +657,43 @@ class App extends Component {
       .then(re => {
         let res = re.data
         if (res.status == 200) {
-
-
-
           let data = res.response
-          console.log(data.deviceList)
           let length = data.deviceList.length
-
           //数据分组-每12个一组
           let curSwiperDataArr=[];
           let groupSize = 12;
           for (let i = 0, j = length; i < j; i += groupSize) {
             curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
           }
-          console.log(curSwiperDataArr)
-
+          // 对数据进行处理，发光的设备和设备排列的规则
           curSwiperDataArr.map((item,index) => {
-              let iLength = item.length
-              item.map((item1,index1)=>{
-                if(iLength<7){
-                  item1['long'] = 1;
-                }
-                else if(iLength > 6 && iLength < 13){
-                  if(index1 < 12-iLength){
-                    item1['long'] = 1;
-                  }else{
-                    item1['long'] = 0;
-                  }
-                }
-                console.log(this.state.actionEquipmentListIndex)
-                console.log(index1)
-                if(this.state.actionEquipmentListIndex<12){
-                  if(index1 == this.state.actionEquipmentListIndex){
-                    item1['shine'] = 1;
-                  }else{
-                    item1['shine'] = 0;
-                  }
-                }else{
-                  this.state.actionEquipmentListIndex = this.state.actionEquipmentListIndex % 12
-                  if(index1 == this.state.actionEquipmentListIndex){
-                    item1['shine'] = 1;
-                  }else{
-                    item1['shine'] = 0;
-                  }
-                }
-
-                // item['long'] = 1;
+            let iLength = item.length
+            item.map((item1,index1)=>{
+              if(iLength<7){
+                item1['long'] = 1;
               }
-              )
+              else if(iLength > 6 && iLength < 13){
+                if(index1 < 12-iLength){
+                  item1['long'] = 1;
+                }else{
+                  item1['long'] = 0;
+                }
+              }
+              if(this.state.actionEquipmentListIndex<12){
+                if(index1 == this.state.actionEquipmentListIndex){
+                  item1['shine'] = 1;
+                }else{
+                  item1['shine'] = 0;
+                }
+              }else{
+                this.state.actionEquipmentListIndex = this.state.actionEquipmentListIndex % 12
+                if(index1 == this.state.actionEquipmentListIndex){
+                  item1['shine'] = 1;
+                }else{
+                  item1['shine'] = 0;
+                }
+              }
+            })
           })
 
           //数据分组-每6个一组
@@ -742,8 +702,6 @@ class App extends Component {
           // for (let i = 0, j = length; i < j; i += groupSize) {
           //   curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
           // }
-          // console.log(curSwiperDataArr)
-
           // curSwiperDataArr.map((item,index) => {
           //     let iLength = item.length
           //     item.map((item1,index1)=>{
@@ -757,30 +715,8 @@ class App extends Component {
           //           item1['long'] = 0;
           //         }
           //       }
-          //     }
-          //     )
+          //     })
           // })
-
-          console.log(curSwiperDataArr)
-
-          // data.deviceList.map((item,index)=>{
-          //   if(length<7){
-          //     item['long'] = 1;
-          //   }
-          //   else if(length > 6 && length < 13){
-          //     if(index < 12-length){
-          //       item['long'] = 1;
-          //     }else{
-          //       item['long'] = 0;
-          //     }
-          //   }
-        
-          //   // item['long'] = 1;
-          // })
-
-
-         console.log(data.deviceList)
-
           this.setState(
             {
               equipmentListSlice: curSwiperDataArr,
@@ -834,7 +770,6 @@ class App extends Component {
           let data = res.response
           let footerInfoStatus = ''
           // 设备已解绑状态
-
           if (window.Number(data.yunPingStatus) === 2) {
             config.android && config.android.setBinding();
           }
@@ -866,9 +801,9 @@ class App extends Component {
         }
       }).catch(error => {
         if (this.state.footerInfoStatus !== 'noNetwork') {
-            this.setState({
-                footerInfoStatus: 'networkAbnormal',
-            })
+          this.setState({
+              footerInfoStatus: 'networkAbnormal',
+          })
         }
     })
   }
@@ -900,7 +835,6 @@ class App extends Component {
   }
   // 更新本地显示时间
   updateLocalTime() {
-   
     setInterval(() => {
       let dataObj = new Date()
       let nongLi = solarLunar.solar2lunar(
@@ -908,7 +842,6 @@ class App extends Component {
         dataObj.getMonth() + 1,
         dataObj.getDate()
       )
-
       let time =
         tools.momentFormat(dataObj.getTime(), "LL") +
         ` 农历${nongLi.monthCn}${nongLi.dayCn}` +
@@ -924,7 +857,6 @@ class App extends Component {
   render() {
     return (
       <div className="app-wrap">
-
         <div className="app-header">
           <div className="app-container">
             <div className="app-header-info">
@@ -940,11 +872,6 @@ class App extends Component {
             </div>
           </div>
         </div>
-
-
-
-
-
 
         <div className="app-content">
           <div className="app-content-left">
@@ -965,7 +892,6 @@ class App extends Component {
                                   <p className="one">
                                   {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
                                   </p>
-            
                                   <div className="two">
                                   <MarqueeWrap
                                       title={item.address || '-'}
@@ -991,7 +917,7 @@ class App extends Component {
                                                 useGrouping={true}
                                               />
                                               <span className="four">v</span></p>
-                                              <p className="five">{item1.statusName}</p>
+                                              <p className="five">{item1.statusName?item1.statusName:''}</p>
                                             </li>
                                           )
                                         })
@@ -1008,10 +934,29 @@ class App extends Component {
                                   <MarqueeWrap
                                       title={item.address || '-'}
                                   /></div>
-                                  <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}°C <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}mA <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}kW</p>
+                                  <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kW':''}</p>
                                 </div>
-                                <p className="voltage">{item.indicatorList[0].indicatorValue} <span>V</span></p>
-                                <p className="current">{item.indicatorList[1].indicatorValue} <span>A</span></p>
+                                <p className="voltage">
+                                <CountUp
+                                  start={0}
+                                  end={item.indicatorList[0].indicatorValue}
+                                  decimals={0}
+                                  duration={2.5}
+                                  useEasing={true}
+                                  useGrouping={true}
+                                />
+                                <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
+                                </p>
+
+                                <p className="current">
+                                <CountUp
+                                  start={0}
+                                  end={item.indicatorList[1].indicatorValue}
+                                  decimals={2}
+                                  duration={2.5}
+                                />
+                                <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
+                                </p>
                               </li>
                             </div>
                             )
@@ -1045,7 +990,6 @@ class App extends Component {
                             useGrouping={true}
                         />
                       
-
                         <span style={{fontSize:`20px`}}>
                         /
                         <CountUp
@@ -1059,9 +1003,7 @@ class App extends Component {
                         
                         </span>
                       </span>
-                )
-                        
-                        ):'-'
+                      )):'-'
                     }
                 </div>
                 <div className="warn-day-name">报警/设备总数</div>
@@ -1104,7 +1046,6 @@ class App extends Component {
                             {item.indicatorName}
                           </span>
                           <span className="warn-total-num">
-                           
                             <CountUp
                               start={0}
                               end={item.alarmTimes}
