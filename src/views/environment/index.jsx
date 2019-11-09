@@ -91,7 +91,7 @@ class MarqueeWrap extends Component {
                 className="marquee-wrap-marquee"
                 behavior=""
                 truespeed = "true"
-                scrolldelay="100"
+                scrolldelay="300"
                 direction={this.props.marqueeDirection}
                 scrollamount={this.props.scrollamount}
             >
@@ -739,6 +739,7 @@ class App extends Component {
                     }
                 }
                 this.initEquipmentList()
+                this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0 &&
                 this.initProportion24th()
             }
           )
@@ -760,7 +761,7 @@ class App extends Component {
         })
     }
     this.$http
-      .post("/rest/tower/getTvBasicInfo", {
+      .post("/rest/elec/getTvBasicInfo", {
         deviceCode: this.deviceCode,
         version: this.version
       })
