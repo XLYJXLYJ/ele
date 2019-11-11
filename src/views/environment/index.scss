@@ -138,6 +138,8 @@ body,
 
 .swiper-container {
   overflow: hidden;
+  position: relative;
+  left: px-rem(-50);
 }  
 .swiper-slide{
   float: left;
@@ -235,9 +237,10 @@ body,
             border-radius: px-rem(16);
             // box-shadow: rgba(252, 184, 19, 0.4) px-rem(0) px-rem(10) px-rem(10) px-rem(2) inset;
             background-image: linear-gradient(101deg, rgba(252, 252, 19, 0.05), rgba(252, 184, 19, 0.05));
-            box-shadow:0 px-rem(60) px-rem(60) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(10) px-rem(30) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
+            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
             &.active{
-              background-image: linear-gradient(95deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
+               box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(255, 0, 0, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(255, 0, 0, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(255, 0, 0, 0.15);
+               background-image: linear-gradient(101deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
             }
             .left{
               width: px-rem(1248);
@@ -326,7 +329,7 @@ body,
               width: px-rem(1736);
               height: px-rem(282);
               ul{
-                width: 100%;
+                width: 95%;
                 height: px-rem(282);
                 display: flex;
                 justify-content: space-between;
@@ -407,7 +410,7 @@ body,
             border-radius: px-rem(16);
             // box-shadow: rgba(252, 184, 19, 0.4) px-rem(0) px-rem(10) px-rem(10) px-rem(2) inset;
             background-image: linear-gradient(101deg, rgba(252, 252, 19, 0.05), rgba(252, 184, 19, 0.05));
-            box-shadow:0 px-rem(60) px-rem(60) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(10) px-rem(30) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
+            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
             &.active{
               background-image: linear-gradient(95deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
             }
@@ -416,12 +419,14 @@ body,
               height: px-rem(282);
               .one{
                   font-size: px-rem(60);
-                  height: px-rem(80);
+                  height: px-rem(60);
                   font-weight: 400;
                   color: #fcb813;
                   position: absolute;
                   left: px-rem(204);
                   top: px-rem(48);
+                  width: px-rem(900);
+                  overflow: hidden;
                   img{
                     width: px-rem(48);
                     height: px-rem(48);
@@ -464,7 +469,7 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1164);
+              left: px-rem(1134);
               top: px-rem(70);
 
               span{

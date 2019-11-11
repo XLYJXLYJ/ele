@@ -615,7 +615,7 @@ class App extends Component {
       console.log(456)
       return null
     }
-    let updateTime = this.state.equipmentList.length == 1 ? 60 : 30
+    let updateTime = this.state.equipmentList.length == 1 ? 60 : 5
     //切换时间
     // let updateTime = 200
     this.updateDate('init')
@@ -891,7 +891,7 @@ class App extends Component {
                                 <div className="left">
                                   <img src={require("../../assets/images/cdz.png")}  alt=""/>
                                   <p className="one">
-                                  {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                                  {item.deviceName} <img className={item.status != 2 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
                                   </p>
                                   <div className="two">
                                   <MarqueeWrap
@@ -906,20 +906,25 @@ class App extends Component {
                                     {
                                       item.indicatorList.map((item1,index1) => {
                                         return(
-                                          <li  key={index1} className={item1.status != 0 ? "left-supervise-list active" : "left-supervise-list"}>
-                                            <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
-                                            <p className="three">
-                                              <CountUp
-                                                start={0}
-                                                end={item1.indicatorValue}
-                                                decimals={0}
-                                                duration={2.5}
-                                                useEasing={true}
-                                                useGrouping={true}
-                                              />
-                                              <span className="four">v</span></p>
-                                              <p className="five">{item1.statusName?item1.statusName:''}</p>
-                                            </li>
+                                          (this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?
+                                          <li  key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list active"}>
+                                          <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                          <p className="three">
+                                            <CountUp
+                                              start={0}
+                                              end={item1.indicatorValue}
+                                              decimals={0}
+                                              duration={2.5}
+                                              useEasing={true}
+                                              useGrouping={true}
+                                            />
+                                            <span className="four">{item1.unit}</span></p>
+                                            <p className="five">{item1.statusName?item1.statusName:''}</p>
+                                          </li>:
+                                          <li key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list"}>
+                                          <p className={item.status == 1 ? "one" : item.status == -1 ? "one" : 'one'}>{item1.indicatorName}</p>
+                                          <p className="three">-</p>
+                                          </li>
                                           )
                                         })
                                       }
@@ -930,13 +935,17 @@ class App extends Component {
                               <li  className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
                                 <div className="left">
                                   <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                                  <p className="one"> {item.deviceName} <img className={item.status != 1 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
+                                  <p className="one"> {item.deviceName} <img className={item.status != 2 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
                                   <div className="two">       
                                   <MarqueeWrap
                                       title={item.address || '-'}
                                   /></div>
-                                  <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kW':''}</p>
+                                  {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kW':''}</p>:
+                                   <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: - <span>&nbsp;&nbsp;</span>漏电量: - <span>&nbsp;&nbsp;</span> 耗电量: -</p>}
+                                 
                                 </div>
+
+                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?  
                                 <p className="voltage">
                                 <CountUp
                                   start={0}
@@ -947,8 +956,10 @@ class App extends Component {
                                   useGrouping={true}
                                 />
                                 <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
-                                </p>
+                                </p>: ''}
+                                 
 
+                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
                                 <p className="current">
                                 <CountUp
                                   start={0}
@@ -957,7 +968,9 @@ class App extends Component {
                                   duration={2.5}
                                 />
                                 <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
-                                </p>
+                                </p>:<p className="current">-</p>}
+                                
+
                               </li>
                             </div>
                             )
@@ -978,8 +991,8 @@ class App extends Component {
               <div className="warn-day">
                 <div className="warn-day-num">
                 {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast') ? 
-                    (!this.state.effectiveDeviceNum ? (
-                        '-'
+                    (!this.state.effectiveDeviceNum || this.state.effectiveDeviceNum == 0? (
+                        '0'
                     ) : (
                       <span>       
                          <CountUp
@@ -990,7 +1003,6 @@ class App extends Component {
                             useEasing={true}
                             useGrouping={true}
                         />
-                      
                         <span style={{fontSize:`20px`}}>
                         /
                         <CountUp
@@ -1012,8 +1024,8 @@ class App extends Component {
               <div className="warn-time">
                 <div className="warn-time-num">
                 {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
-                    (!this.state.warnTimes? (
-                      '-'
+                    (!this.state.warnTimes || this.state.warnTimes ==0 ? (
+                      '0'
                     ) : (
                         <CountUp
                             start={0}
