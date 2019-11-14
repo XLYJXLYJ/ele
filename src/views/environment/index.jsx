@@ -214,10 +214,10 @@ class App extends Component {
       effectiveDeviceNum:'', //报警设备总数
       warnDeviceNum:'', //有效设备报警总数
       actionEquipmentListIndex: 0, // 选中当前设备
-      warnStatistic: {}, // 报警统计
+      warnStatistic: [], // 报警统计
     }
     // 18414220100155144  18414220100155130 huanjingjiance
-    let deviceCode = tools.getUrlParam("deviceCode") || "yongdian"
+    let deviceCode = tools.getUrlParam("deviceCode") || "18414220100155144"
     this.deviceCode = deviceCode // 设备码
     this.version = tools.getUrlParam("version") || "1.0" // 版本
 
@@ -661,9 +661,84 @@ class App extends Component {
           let length = data.deviceList.length
           //数据分组-每12个一组
           let curSwiperDataArr=[];
-          let groupSize = 12;
-          for (let i = 0, j = length; i < j; i += groupSize) {
-            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
+          let groupSize = [];
+          console.log(data)
+
+          let warnDeviceNumData = data.warnDeviceNum // 报警设备
+          let effectiveDeviceNumData = data.effectiveDeviceNum // 设备总数
+
+          for(let j=0;i<effectiveDeviceNumData;i++){
+              if(data[i].staus == 2){
+                let a = data.slice(i,i+1) // 截取报警的数据
+                data.unshift(a) // 将报警的数据丢在前头
+              }
+          }
+
+          if(warnDeviceNumData == 0 ){
+            for(let i = 0;i<effectiveDeviceNumData;i+12){
+              groupSize.push(12);
+            }
+          }else if(warnDeviceNumData <= 6){
+            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
+              if(i = 0){
+                groupSize.push(12-warnDeviceNumData);
+              }else{
+                groupSize.push(12);
+              }
+            }
+          }else if(warnDeviceNumData > 6 && warnDeviceNumData <= 12){
+            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
+              if(i = 0){
+                groupSize.push(6);
+              }else if(i = 1){
+                groupSize.push(18-warnDeviceNumData);
+              }else{
+                groupSize.push(12);
+              }
+            }
+          }
+          else if(warnDeviceNumData > 12 && warnDeviceNumData <= 18){
+            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
+              if(i = 0){
+                groupSize.push(6);
+              }else if(i = 1){
+                groupSize.push(6);
+              }else if(i = 2){
+                groupSize.push(24-warnDeviceNumData);
+              }else{
+                groupSize.push(12);
+              }
+            }
+          }
+          else if(warnDeviceNumData > 18 && warnDeviceNumData <= 24){
+            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
+              if(i = 0){
+                groupSize.push(6);
+              }else if(i = 1){
+                groupSize.push(6);
+              }else if(i = 2){
+                groupSize.push(6);
+              }else if(i = 3){
+                groupSize.push(30-warnDeviceNumData);
+              }else{
+                groupSize.push(12);
+              }
+            }
+          }
+          else if(warnDeviceNumData > 24){
+            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/6;i+1){
+              if(i = effectiveDeviceNumData/6 - 2){
+                groupSize.push(6);
+              }else if(i = effectiveDeviceNumData/6 - 1){
+                groupSize.push(30-warnDeviceNumData);
+              }else{
+                groupSize.push(12);
+              }
+            }
+          }
+
+          for (let i = 0, j = effectiveDeviceNumData; i < j; i += groupSize[i]) {
+            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize[i]));
           }
           // 对数据进行处理，发光的设备和设备排列的规则
           curSwiperDataArr.map((item,index) => {
@@ -739,12 +814,14 @@ class App extends Component {
                     }
                 }
                 this.initEquipmentList()
-                this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0 &&
-                this.initProportion24th()
+                // if(this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0){
+                //   this.initProportion24th()
+                // }
             }
           )
         }
       }).catch(error => {
+        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
             this.setState({
                 footerInfoStatus: 'networkAbnormal',
@@ -801,6 +878,7 @@ class App extends Component {
           })
         }
       }).catch(error => {
+        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
           this.setState({
               footerInfoStatus: 'networkAbnormal',
@@ -822,11 +900,13 @@ class App extends Component {
         let res = re.data
         if (res.status == 200) {
           let data = res.response
+          console.log(data)
           this.setState({
             warnStatistic: data
           })
         }
       }).catch(error => {
+        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
             this.setState({
                 footerInfoStatus: 'networkAbnormal',
@@ -887,11 +967,11 @@ class App extends Component {
                           itemMain.map((item,index) => {
                             return(
                             <div key={index}>
-                              <li className={item.status != 1 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
+                              <li className={item.status == 2 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
                                 <div className="left">
                                   <img src={require("../../assets/images/cdz.png")}  alt=""/>
                                   <p className="one">
-                                  {item.deviceName} <img className={item.status != 2 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                                  {item.deviceName} <img className={item.status == 2 ? "" : "active1"} src={require("../../assets/images/warnMarker.png")} alt=""/>
                                   </p>
                                   <div className="two">
                                   <MarqueeWrap
@@ -908,7 +988,7 @@ class App extends Component {
                                         return(
                                           (this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?
                                           <li  key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list active"}>
-                                          <p className={item.status == 1 ? "one upIcon" : item.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                          <p className={item1.status == 1 ? "one upIcon" : item1.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
                                           <p className="three">
                                             <CountUp
                                               start={0}
@@ -931,47 +1011,50 @@ class App extends Component {
                                     </ul>
                                 </div>
                               </li>
-    
-                              <li  className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
-                                <div className="left">
-                                  <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                                  <p className="one"> {item.deviceName} <img className={item.status != 2 ? "active1" : ""} src={require("../../assets/images/warnMarker.png")} alt=""/></p>
-                                  <div className="two">       
-                                  <MarqueeWrap
-                                      title={item.address || '-'}
-                                  /></div>
-                                  {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kW':''}</p>:
-                                   <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: - <span>&nbsp;&nbsp;</span>漏电量: - <span>&nbsp;&nbsp;</span> 耗电量: -</p>}
-                                 
-                                </div>
 
-                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?  
-                                <p className="voltage">
-                                <CountUp
-                                  start={0}
-                                  end={item.indicatorList[0].indicatorValue}
-                                  decimals={0}
-                                  duration={2.5}
-                                  useEasing={true}
-                                  useGrouping={true}
-                                />
-                                <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
-                                </p>: ''}
-                                 
+                                <li className={`${item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"} ${item.status == 2 ? "active2" : ""}` }>
+                                  <div className="left">
+                                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                                      <p className="one"> {item.deviceName}<img className={item.status == 2 ? "" : "active1"}  src={require("../../assets/images/warnMarker.png")} alt=""/></p>
+                                      <div className="two">       
+                                      <MarqueeWrap
+                                          title={item.address || '-'}
+                                      /></div>
+                                      {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kw·h':''}</p>:
+                                      <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: - <span>&nbsp;&nbsp;</span>漏电量: - <span>&nbsp;&nbsp;</span> 耗电量: -</p>}
+                                    
+                                    </div>
 
-                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
-                                <p className="current">
-                                <CountUp
-                                  start={0}
-                                  end={item.indicatorList[1].indicatorValue}
-                                  decimals={2}
-                                  duration={2.5}
-                                />
-                                <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
-                                </p>:<p className="current">-</p>}
-                                
+                                    {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?  
+                                    <p className="voltage">
+                                    <CountUp
+                                      start={0}
+                                      end={item.indicatorList[0].indicatorValue}
+                                      decimals={0}
+                                      duration={2.5}
+                                      useEasing={true}
+                                      useGrouping={true}
+                                    />
+                                    <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
+                                    </p>: ''}
+                                    
 
-                              </li>
+                                    {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
+                                    <p className="current">
+                                    <CountUp
+                                      start={0}
+                                      end={item.indicatorList[1].indicatorValue}
+                                      decimals={2}
+                                      duration={2.5}
+                                    />
+                                    <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
+                                    </p>:<p className="current">-</p>}
+        
+
+                                </li>
+                     
+
+
                             </div>
                             )
                           })
@@ -1003,7 +1086,7 @@ class App extends Component {
                             useEasing={true}
                             useGrouping={true}
                         />
-                        <span style={{fontSize:`20px`}}>
+                        <span style={{fontSize:`12px`}}>
                         /
                         <CountUp
                             start={0}
@@ -1013,7 +1096,6 @@ class App extends Component {
                             useEasing={true}
                             useGrouping={true}
                         />
-                        
                         </span>
                       </span>
                       )):'-'
@@ -1049,8 +1131,8 @@ class App extends Component {
             </div>
             <div className="warn-24th-numtitle">各指标 24 小时报警次数</div>
             <div className="warn-24th-list">
-              {this.state.warnStatistic.indicatorWarnList
-                ? this.state.warnStatistic.indicatorWarnList.map(
+              {this.state.warnStatistic
+                ? this.state.warnStatistic.map(
                   (item, index) => {
                     return (
                       <div className="warn-24th-li" key={index}>
@@ -1070,14 +1152,12 @@ class App extends Component {
                           </span>
                         </div>
                         <div className="warn-total">
-                          {item.alarmTimes != 0 &&
                             <div
                               className="warn-proportion"
                               style={{
                                 width: `${item.alarmTimes / item.totalTimes * 100}%`
                               }}
                             />
-                          }
                         </div>
                       </div>
                     )

@@ -237,10 +237,10 @@ body,
             border-radius: px-rem(16);
             // box-shadow: rgba(252, 184, 19, 0.4) px-rem(0) px-rem(10) px-rem(10) px-rem(2) inset;
             background-image: linear-gradient(101deg, rgba(252, 252, 19, 0.05), rgba(252, 184, 19, 0.05));
-            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
+            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.2), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(65, 36, 36, 0.45), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.4), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.3);
             &.active{
-               box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(255, 0, 0, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(255, 0, 0, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(255, 0, 0, 0.15);
-               background-image: linear-gradient(101deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
+               box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(255, 0, 0, 0.2), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.45), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(255, 0, 0, 0.4), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(255, 0, 0, 0.3);
+               background-image: linear-gradient(101deg, rgba(255, 0, 0, 0.2), rgba(63, 24, 24, 0.1));
             }
             .left{
               width: px-rem(1248);
@@ -258,7 +258,7 @@ body,
                     height: px-rem(48);
                     position:relative;
                     left: px-rem(0);
-                    top: px-rem(7);
+                    top: px-rem(6);
                   }
                   .active1{
                     display: none;
@@ -298,6 +298,7 @@ body,
               position: absolute;
               left: px-rem(1214);
               top: px-rem(70);
+              font-family: AvenirNext;
               span{
                 font-size: px-rem(30);
                 height: px-rem(40);
@@ -316,6 +317,7 @@ body,
               position: absolute;
               left: px-rem(1330);
               top: px-rem(70);
+              font-family: AvenirNext;
               span{
                 font-size: px-rem(30);
                 height: px-rem(40);
@@ -338,6 +340,7 @@ body,
                   width: px-rem(250);
                   height: px-rem(282);
                   position: relative;
+                  top: px-rem(4);
                   &.active {
                     .one,
                     .three,
@@ -410,10 +413,11 @@ body,
             border-radius: px-rem(16);
             // box-shadow: rgba(252, 184, 19, 0.4) px-rem(0) px-rem(10) px-rem(10) px-rem(2) inset;
             background-image: linear-gradient(101deg, rgba(252, 252, 19, 0.05), rgba(252, 184, 19, 0.05));
-            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.06), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.3), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.25), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.15);
-            &.active{
-              background-image: linear-gradient(95deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
-            }
+            box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(158, 151, 135, 0.3), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.55), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(252, 184, 19, 0.5), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(252, 184, 19, 0.4);
+            &.active2{
+              box-shadow:0 px-rem(0) px-rem(0) px-rem(0) rgba(255, 0, 0, 0.2), px-rem(0) px-rem(0) px-rem(0) px-rem(0) rgba(0, 0, 0, 0.45), inset px-rem(0) px-rem(-12) px-rem(4) px-rem(4) rgba(255, 0, 0, 0.4), inset 0 px-rem(12) px-rem(12) px-rem(4) rgba(255, 0, 0, 0.3);
+              background-image: linear-gradient(101deg, rgba(255, 0, 0, 0.2), rgba(63, 24, 24, 0.1));
+           }
             .left{
               width: px-rem(1248);
               height: px-rem(282);
@@ -431,8 +435,8 @@ body,
                     width: px-rem(48);
                     height: px-rem(48);
                     position:relative;
-                    left: px-rem(0);
-                    top: px-rem(7);
+                    left: px-rem(10);
+                    top: px-rem(4);
                   }
                   .active1{
                     display: none;
@@ -442,6 +446,7 @@ body,
                 font-size: px-rem(40);
                 height: px-rem(40);
                 width: px-rem(800);
+                line-height: px-rem(50);
                 color: #cccccc;
                 position: absolute;
                 top: px-rem(124);
@@ -794,6 +799,7 @@ body,
           // margin-bottom: px-rem(-15);
           .warn-num {
             display: flex;
+            width:80%;
             justify-content: space-between;
             margin: px-rem(50) 0 px-rem(30);
 
@@ -812,7 +818,7 @@ body,
           }
 
           .warn-total {
-            width: 100%;
+            width: 80%;
             height: px-rem(12);
             border-radius: px-rem(6);
             background-color: rgba(204, 204, 204, 0.25);
