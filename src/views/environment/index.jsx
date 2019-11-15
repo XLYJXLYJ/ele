@@ -251,7 +251,6 @@ class App extends Component {
       return num / 38.4 + "rem"
     }
     let startAngle = -Math.PI/2 - Math.PI //开始角度
-    console.log(this.proportionDom)
     if(this.proportionDom.current != null){
       var height = this.proportionDom.current.offsetHeight+20
     }
@@ -601,7 +600,6 @@ class App extends Component {
   initEquipmentList() {
     // 没有数据情况下
     if (!this.state.equipmentList.length) {
-      console.log(123)
       this.setState({
         actionEquipmentListIndex: 0,
         equipmentList: []
@@ -612,7 +610,6 @@ class App extends Component {
       return null
     }
     if (this.equipmentListTime) {
-      console.log(456)
       return null
     }
     let updateTime = this.state.equipmentList.length == 1 ? 60 : 5
@@ -620,7 +617,6 @@ class App extends Component {
     // let updateTime = 200
     this.updateDate('init')
     this.equipmentListTime = setInterval(() => {
-      console.log(789)
       if (
         this.state.actionEquipmentListIndex <
         this.state.equipmentList.length - 1
@@ -657,40 +653,220 @@ class App extends Component {
       .then(re => {
         let res = re.data
         if (res.status == 200) {
-          let data = res.response
-          let length = data.deviceList.length
+          // let data = res.response
+
+          let data = {
+            deviceList:[
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"1号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"2号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"3号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"4号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"5号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"6号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"7号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"8号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"9号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"10号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              }
+            ],
+            warnDeviceNum:3,
+            effectiveDeviceNum:10,
+            warnTimes:6000
+          }
+
           //数据分组-每12个一组
           let curSwiperDataArr=[];
           let groupSize = [];
-          console.log(data)
 
           let warnDeviceNumData = data.warnDeviceNum // 报警设备
           let effectiveDeviceNumData = data.effectiveDeviceNum // 设备总数
 
-          for(let j=0;i<effectiveDeviceNumData;i++){
-              if(data[i].staus == 2){
-                let a = data.slice(i,i+1) // 截取报警的数据
-                data.unshift(a) // 将报警的数据丢在前头
+          for(let j=0;j<effectiveDeviceNumData;j++){
+              if(data.deviceList[j].status == 2){
+                let a = data.deviceList.slice(j,j+1)[0] // 截取报警的数据
+                data.deviceList.splice(j, 1);
+                data.deviceList.unshift(a) // 将报警的数据丢在前头
               }
           }
 
           if(warnDeviceNumData == 0 ){
-            for(let i = 0;i<effectiveDeviceNumData;i+12){
+            for(let i = 0;i<=Math.ceil(effectiveDeviceNumData/12);i++){
               groupSize.push(12);
             }
           }else if(warnDeviceNumData <= 6){
-            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
-              if(i = 0){
+            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
+            for(let i = 0;i<=j;i++){
+              if(i == 0){
                 groupSize.push(12-warnDeviceNumData);
               }else{
                 groupSize.push(12);
               }
             }
           }else if(warnDeviceNumData > 6 && warnDeviceNumData <= 12){
-            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
-              if(i = 0){
+            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
+            for(let i = 0;i<=j;i++){
+              if(i == 0){
                 groupSize.push(6);
-              }else if(i = 1){
+              }else if(i == 1){
                 groupSize.push(18-warnDeviceNumData);
               }else{
                 groupSize.push(12);
@@ -698,8 +874,9 @@ class App extends Component {
             }
           }
           else if(warnDeviceNumData > 12 && warnDeviceNumData <= 18){
-            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
-              if(i = 0){
+            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
+            for(let i = 0;i<=j;i++){
+              if(i == 0){
                 groupSize.push(6);
               }else if(i = 1){
                 groupSize.push(6);
@@ -711,14 +888,15 @@ class App extends Component {
             }
           }
           else if(warnDeviceNumData > 18 && warnDeviceNumData <= 24){
-            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/12;i+1){
-              if(i = 0){
+            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
+            for(let i = 0;i<=j;i++){
+              if(i == 0){
                 groupSize.push(6);
-              }else if(i = 1){
+              }else if(i == 1){
                 groupSize.push(6);
-              }else if(i = 2){
+              }else if(i == 2){
                 groupSize.push(6);
-              }else if(i = 3){
+              }else if(i == 3){
                 groupSize.push(30-warnDeviceNumData);
               }else{
                 groupSize.push(12);
@@ -726,10 +904,11 @@ class App extends Component {
             }
           }
           else if(warnDeviceNumData > 24){
-            for(let i = 0;i<(effectiveDeviceNumData-warnDeviceNumData)/6;i+1){
-              if(i = effectiveDeviceNumData/6 - 2){
+            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
+            for(let i = 0;i<=j;i++){
+              if(i == Math.ceil(effectiveDeviceNumData/6) - 2){
                 groupSize.push(6);
-              }else if(i = effectiveDeviceNumData/6 - 1){
+              }else if(i == Math.ceil(effectiveDeviceNumData/6) - 1){
                 groupSize.push(30-warnDeviceNumData);
               }else{
                 groupSize.push(12);
@@ -737,8 +916,8 @@ class App extends Component {
             }
           }
 
-          for (let i = 0, j = effectiveDeviceNumData; i < j; i += groupSize[i]) {
-            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize[i]));
+          for (let i = 0, j = effectiveDeviceNumData,m =0; i < j; i += groupSize[i],m++) {
+            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize[m]));
           }
           // 对数据进行处理，发光的设备和设备排列的规则
           curSwiperDataArr.map((item,index) => {
@@ -821,7 +1000,6 @@ class App extends Component {
           )
         }
       }).catch(error => {
-        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
             this.setState({
                 footerInfoStatus: 'networkAbnormal',
@@ -855,6 +1033,7 @@ class App extends Component {
           else if (window.Number(data.yunPingStatus) === 3) {
             footerInfoStatus = 'urlSourceChange';
             config.android && config.android.destroyWeb();
+            
           }
           // 无数据源
           else if (window.Number(data.yunPingStatus) === 4) {
@@ -878,7 +1057,6 @@ class App extends Component {
           })
         }
       }).catch(error => {
-        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
           this.setState({
               footerInfoStatus: 'networkAbnormal',
@@ -900,13 +1078,11 @@ class App extends Component {
         let res = re.data
         if (res.status == 200) {
           let data = res.response
-          console.log(data)
           this.setState({
             warnStatistic: data
           })
         }
       }).catch(error => {
-        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
             this.setState({
                 footerInfoStatus: 'networkAbnormal',
