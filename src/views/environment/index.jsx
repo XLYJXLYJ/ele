@@ -278,9 +278,11 @@ class App extends Component {
     let isAllZeo = equipmentList.every(e => e.alarmTimes == 0)
     isAllZeo && equipmentList.forEach(e => e.alarmTimes = 10)
 
-    if (this.state.actionEquipmentListIndex != 0) {
-      equipmentList.splice(0, 0, equipmentList.splice(this.state.actionEquipmentListIndex, 1)[0]) //选中设备放到数组第一位
-    }
+    // if (this.state.actionEquipmentListIndex != 0) {
+    //   equipmentList.splice(0, 0, equipmentList.splice(this.state.actionEquipmentListIndex, 1)[0]) //选中设备放到数组第一位
+    // }
+
+    console.log(equipmentList)
 
     let ds = new DataSet()
     let dv = ds.createView().source(equipmentList)
@@ -653,185 +655,185 @@ class App extends Component {
       .then(re => {
         let res = re.data
         if (res.status == 200) {
-          // let data = res.response
+          let data = res.response
 
-          let data = {
-            deviceList:[
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"1号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"2号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"3号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"4号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:2
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"5号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:2
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"6号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"7号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:2
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"8号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"9号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              },
-              {
-                address:'下梅林二街六号颂德国际商铺1楼',
-                alarmTimes:0,
-                bindStatus:2,
-                deviceCode:"electricity1",
-                deviceName:"10号用电监测系统（220v）",
-                indicatorList:[
-                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-                ],
-                isEffective:1,
-                orderProductList:2299,
-                status:1
-              }
-            ],
-            warnDeviceNum:3,
-            effectiveDeviceNum:10,
-            warnTimes:6000
-          }
+          // let data = {
+          //   deviceList:[
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"1号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"2号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"3号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"4号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:2
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"5号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:2
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"6号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"7号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:2
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"8号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"9号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     },
+          //     {
+          //       address:'下梅林二街六号颂德国际商铺1楼',
+          //       alarmTimes:0,
+          //       bindStatus:2,
+          //       deviceCode:"electricity1",
+          //       deviceName:"10号用电监测系统（220v）",
+          //       indicatorList:[
+          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+          //       ],
+          //       isEffective:1,
+          //       orderProductList:2299,
+          //       status:1
+          //     }
+          //   ],
+          //   warnDeviceNum:3,
+          //   effectiveDeviceNum:10,
+          //   warnTimes:6000
+          // }
 
           //数据分组-每12个一组
           let curSwiperDataArr=[];
@@ -993,9 +995,9 @@ class App extends Component {
                     }
                 }
                 this.initEquipmentList()
-                // if(this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0){
-                //   this.initProportion24th()
-                // }
+                if(this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0){
+                  this.initProportion24th()
+                }
             }
           )
         }
