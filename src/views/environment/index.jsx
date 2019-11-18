@@ -232,8 +232,9 @@ class App extends Component {
 
   componentDidMount(){
     new Swiper('.swiper-container', {
-      autoplay:true,
-      delay:36000,
+      direction: 'vertical',
+      autoplay:false,
+      delay:60000,
       slidesPerView: 1,
       spaceBetween: 0,
       observer: true,
