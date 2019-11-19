@@ -144,7 +144,6 @@ body,
 .swiper-slide{
   float: left;
   width:100%;
-
 }
 
 
@@ -208,7 +207,7 @@ body,
     padding-top: px-rem(16);
     flex: 1;
     display: flex;
-
+    overflow: hidden;
     .app-content-left{
       display: flex;
       flex-direction: column;
@@ -216,12 +215,18 @@ body,
       flex: 0 0 px-rem(2984);
       margin: 0 px-rem(100) 0 px-rem(120);
       background: #222326;
+      .animate{
+        transition: all 3s;
+      }
       .app-content-left-ul{
         width: 100%;
         height: 100%;
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
+        margin-top: 0;
+        
+
         .no-show{
           display: none!important;
         }

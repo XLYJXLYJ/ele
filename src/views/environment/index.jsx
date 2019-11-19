@@ -210,7 +210,11 @@ class App extends Component {
       yunPingCode: "", // 云屏设备码
       equipmentList: [], //设备列表
       equipmentListSlice:[], //处理后的设备列表数据
+      okEquipmentList:[],//没有报警的设备列表数据
       alermEquipmentList:[], //报警的设备列表数据
+      animate:false,
+      isFold:false,//是否进行折叠滚动
+      listMarginTop:0,//折叠滚动marginTop
       warnTimes:'',//报警次数
       effectiveDeviceNum:'', //报警设备总数
       warnDeviceNum:'', //有效设备报警总数
@@ -233,16 +237,19 @@ class App extends Component {
   }
 
   componentDidMount(){
-    new Swiper('.swiper-container', {
-      // direction: 'vertical',
-      autoplay:true,
-      // delay:60000,
-      slidesPerView: 1,
-      spaceBetween: 0,
-      observer: true,
-      observeParents: true,
-      setWrapperSize: true,
-    }) 
+    // new Swiper('.swiper-container', {
+    //   // direction: 'vertical',
+    //   // autoplay:6000,
+    //   speed:2000,
+    //   autoplay : {
+    //     delay:60000
+    //   },
+    //   slidesPerView: 1,
+    //   spaceBetween: 0,
+    //   observer: true,
+    //   observeParents: true,
+    //   setWrapperSize: true,
+    // }) 
   }
   //初始化24th 设备告警次数
   initProportion24th() {
@@ -617,7 +624,7 @@ class App extends Component {
     if (this.equipmentListTime) {
       return null
     }
-    let updateTime = this.state.equipmentList.length == 1 ? 60 : 60
+    let updateTime = this.state.equipmentList.length == 1 ? 60 : 6
     //切换时间
     // let updateTime = 200
     // this.updateDate('init')
@@ -661,7 +668,7 @@ class App extends Component {
       if (this.alermEquipmentListTime) {
         return null
       }
-      let updateTime = this.state.alermEquipmentList.length == 1 ? 60 : 60
+      let updateTime = this.state.alermEquipmentList.length == 1 ? 60 : 6
       //切换时间
       // let updateTime = 200
       this.updateDate('init')
@@ -704,185 +711,185 @@ class App extends Component {
       .then(re => {
         let res = re.data
         if (res.status == 200) {
-          let data = res.response
+          // let data = res.response
 
-          // let data = {
-          //   deviceList:[
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"1号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"2号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"3号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"4号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:2
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"5号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:2
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"6号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"7号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:2
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"8号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"9号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     },
-          //     {
-          //       address:'下梅林二街六号颂德国际商铺1楼',
-          //       alarmTimes:0,
-          //       bindStatus:2,
-          //       deviceCode:"electricity1",
-          //       deviceName:"10号用电监测系统（220v）",
-          //       indicatorList:[
-          //         {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
-          //         {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
-          //       ],
-          //       isEffective:1,
-          //       orderProductList:2299,
-          //       status:1
-          //     }
-          //   ],
-          //   warnDeviceNum:3,
-          //   effectiveDeviceNum:10,
-          //   warnTimes:6000
-          // }
+          let data = {
+            deviceList:[
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"1号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"2号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"3号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"4号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"5号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"6号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"7号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:2
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"8号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"9号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              },
+              {
+                address:'下梅林二街六号颂德国际商铺1楼',
+                alarmTimes:0,
+                bindStatus:2,
+                deviceCode:"electricity1",
+                deviceName:"10号用电监测系统（220v）",
+                indicatorList:[
+                  {indicatorName:"电压",indicatorValue:"181",unit:"V",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电流",indicatorValue:"18",unit:"A",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"电缆温度",indicatorValue:"81",unit:"C",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"漏电",indicatorValue:"41",unit:"MA",statusName:"超标",status:"0",dataType:1},
+                  {indicatorName:"总耗电",indicatorValue:"91",unit:"KWH",statusName:"超标",status:"0",dataType:1},
+                ],
+                isEffective:1,
+                orderProductList:2299,
+                status:1
+              }
+            ],
+            warnDeviceNum:3,
+            effectiveDeviceNum:10,
+            warnTimes:6000
+          }
 
           //数据分组-每12个一组
           let curSwiperDataArr=[];
@@ -899,141 +906,165 @@ class App extends Component {
               }
           }
 
-          if(warnDeviceNumData == 0 ){
-            for(let i = 0;i<=Math.ceil(effectiveDeviceNumData/12);i++){
-              groupSize.push(12);
-            }
-          }else if(warnDeviceNumData <= 6){
-            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
-            for(let i = 0;i<=j;i++){
-              if(i == 0){
-                groupSize.push(12-warnDeviceNumData);
-              }else{
-                groupSize.push(12);
-              }
-            }
-          }else if(warnDeviceNumData > 6 && warnDeviceNumData <= 12){
-            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
-            for(let i = 0;i<=j;i++){
-              if(i == 0){
-                groupSize.push(6);
-              }else if(i == 1){
-                groupSize.push(18-warnDeviceNumData);
-              }else{
-                groupSize.push(12);
-              }
-            }
-          }
-          else if(warnDeviceNumData > 12 && warnDeviceNumData <= 18){
-            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
-            for(let i = 0;i<=j;i++){
-              if(i == 0){
-                groupSize.push(6);
-              }else if(i = 1){
-                groupSize.push(6);
-              }else if(i = 2){
-                groupSize.push(24-warnDeviceNumData);
-              }else{
-                groupSize.push(12);
-              }
-            }
-          }
-          else if(warnDeviceNumData > 18 && warnDeviceNumData <= 24){
-            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
-            for(let i = 0;i<=j;i++){
-              if(i == 0){
-                groupSize.push(6);
-              }else if(i == 1){
-                groupSize.push(6);
-              }else if(i == 2){
-                groupSize.push(6);
-              }else if(i == 3){
-                groupSize.push(30-warnDeviceNumData);
-              }else{
-                groupSize.push(12);
-              }
-            }
-          }
-          else if(warnDeviceNumData > 24){
-            let j = Math.ceil((effectiveDeviceNumData-warnDeviceNumData)/12) 
-            for(let i = 0;i<=j;i++){
-              if(i == Math.ceil(effectiveDeviceNumData/6) - 2){
-                groupSize.push(6);
-              }else if(i == Math.ceil(effectiveDeviceNumData/6) - 1){
-                groupSize.push(30-warnDeviceNumData);
-              }else{
-                groupSize.push(12);
-              }
-            }
-          }
 
-          for (let i = 0, j = effectiveDeviceNumData,m =0; i < j; i += groupSize[i],m++) {
-            curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize[m]));
-          }
           // 对数据进行处理，发光的设备和设备排列的规则
-          curSwiperDataArr.map((item,index) => {
-            let iLength = item.length
-            item.map((item1,index1)=>{
-              if(iLength<7){
-                item1['long'] = 1;
-              }
-              else if(iLength > 6 && iLength < 13){
-                if(index1 < 12-iLength){
-                  item1['long'] = 1;
-                }else{
-                  item1['long'] = 0;
-                }
-              }
-              if(this.state.actionEquipmentListIndex<12){
-                if(index1 == this.state.actionEquipmentListIndex){
-                  item1['shine'] = 1;
-                }else{
-                  item1['shine'] = 0;
-                }
-              }else{
-                this.state.actionEquipmentListIndex = this.state.actionEquipmentListIndex % 12
-                if(index1 == this.state.actionEquipmentListIndex){
-                  item1['shine'] = 1;
-                }else{
-                  item1['shine'] = 0;
-                }
-              }
-            })
-          })
-
-          //数据分组-每6个一组
-          // let curSwiperDataArr=[];
-          // let groupSize = 6;
-          // for (let i = 0, j = length; i < j; i += groupSize) {
-          //   curSwiperDataArr.push(data.deviceList.slice(i, i + groupSize));
-          // }
           // curSwiperDataArr.map((item,index) => {
-          //     let iLength = item.length
-          //     item.map((item1,index1)=>{
-          //       if(iLength<3){
+          //   let iLength = item.length
+          //   item.map((item1,index1)=>{
+          //     if(iLength<7){
+          //       item1['long'] = 1;
+          //     }
+          //     else if(iLength > 6 && iLength < 13){
+          //       if(index1 < 12-iLength){
           //         item1['long'] = 1;
+          //       }else{
+          //         item1['long'] = 0;
           //       }
-          //       else if(iLength > 2 && iLength < 7){
-          //         if(index1 < 6-iLength){
-          //           item1['long'] = 1;
-          //         }else{
-          //           item1['long'] = 0;
-          //         }
+          //     }
+          //     if(this.state.actionEquipmentListIndex<12){
+          //       if(index1 == this.state.actionEquipmentListIndex){
+          //         item1['shine'] = 1;
+          //       }else{
+          //         item1['shine'] = 0;
           //       }
-          //     })
+          //     }else{
+          //       this.state.actionEquipmentListIndex = this.state.actionEquipmentListIndex % 12
+          //       if(index1 == this.state.actionEquipmentListIndex){
+          //         item1['shine'] = 1;
+          //       }else{
+          //         item1['shine'] = 0;
+          //       }
+          //     }
+          //   })
           // })
+
           let alermEquipmentList = []
+          let okEquipmentList = []
           data.deviceList.map((item,index) => {
             if(item.status == 2){
               alermEquipmentList.push(item)
+            }else{
+              okEquipmentList.push(item)
             }
           })
 
-          console.log(alermEquipmentList)
+          let alermLength = alermEquipmentList.length
+          let okLength = okEquipmentList.length
+
+          okEquipmentList.map((item,index) => {
+  
+
+            if(alermLength == 0){
+              if(okLength < 7){
+                item['long'] = 1;
+              }
+              else if(okLength > 6 && okLength < 13){
+                if(index < 12 - okLength){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }else{
+                item['long'] = 0;
+                this.setState({
+                  isFold:true
+                })
+              }
+            }else if(alermLength == 1){
+                if(okLength < 6){
+                  item['long'] = 1;
+                }
+                else if(okLength > 5 && okLength < 11){
+                  if(index < 10 - okLength){
+                    item['long'] = 1;
+                  }else{
+                    item['long'] = 0;
+                  }
+                }else{
+                  item['long'] = 0;
+                  this.setState({
+                    isFold:true
+                  })
+                }
+            }else if(alermLength == 2){
+              if(okLength < 5){
+                item['long'] = 1;
+              }
+              else if(okLength > 4 && okLength < 9){
+                if(index < 8 - okLength){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }else{
+                item['long'] = 0;
+                this.setState({
+                  isFold:true
+                })
+              }
+            }else if(alermLength == 3){
+              if(okLength < 4){
+                item['long'] = 1;
+              }
+              else if(okLength > 3 && okLength < 7){
+                if(index < 6 - okLength){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }else{
+                item['long'] = 0;
+                this.setState({
+                  isFold:true
+                })
+              }
+            }else if(alermLength == 4){
+              if(okLength < 3){
+                item['long'] = 1;
+              }
+              else if(okLength > 2 && okLength < 5){
+                if(index < 4 - okLength){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }else{
+                item['long'] = 0;
+                this.setState({
+                  isFold:true
+                })
+              }
+            }else if(alermLength == 5){
+              if(okLength < 2){
+                item['long'] = 1;
+              }
+              else if(okLength > 1 && okLength < 3){
+                if(index < 2 - okLength){
+                  item['long'] = 1;
+                }else{
+                  item['long'] = 0;
+                }
+              }else{
+                item['long'] = 0;
+                this.setState({
+                  isFold:true
+                })
+              }
+            }else if(alermLength == 6){
+              item['long'] = 0;
+              this.setState({
+                isFold:true
+              })
+            }
+
+          })
+
+          this.startScroll() 
 
           this.setState(
             {
               equipmentListSlice: curSwiperDataArr,
+              okEquipmentList:okEquipmentList,
               equipmentList: data.deviceList,
               alermEquipmentList:alermEquipmentList,
               warnTimes:data.warnTimes,
@@ -1042,17 +1073,17 @@ class App extends Component {
             },
             () => {
                 // 如果设备未绑定
-                if (!this.state.equipmentList[this.state.actionEquipmentListIndex].deviceCode) {
-                    this.setState({
-                        footerInfoStatus: 'notBind'
-                    })
-                } else {
-                    if (this.state.footerInfoStatus  == 'notBind') {
-                        this.setState({
-                            footerInfoStatus: ''
-                        })
-                    }
-                }
+                // if (!this.state.equipmentList[this.state.actionEquipmentListIndex].deviceCode) {
+                //     this.setState({
+                //         footerInfoStatus: 'notBind'
+                //     })
+                // } else {
+                //     if (this.state.footerInfoStatus  == 'notBind') {
+                //         this.setState({
+                //             footerInfoStatus: ''
+                //         })
+                //     }
+                // }
                 this.initEquipmentList()
                 this.alermInitEquipmentList()
                 if(this.state.alermEquipmentList.length > 0 && this.state.alermEquipmentList[this.state.alermActionEquipmentListIndex].alarmTimes > 0){
@@ -1062,6 +1093,7 @@ class App extends Component {
           )
         }
       }).catch(error => {
+        console.log(error)
         if (this.state.footerInfoStatus !== 'noNetwork') {
             this.setState({
                 footerInfoStatus: 'networkAbnormal',
@@ -1127,6 +1159,33 @@ class App extends Component {
     })
   }
 
+  startScroll(){
+    let that = this
+
+    if(this.state.isFold){
+      if(this.state.okEquipmentList.length != 0){
+
+        // that.state.okEquipmentList.shift()
+        // that.state.okEquipmentList.shift()
+        console.log(this.state.okEquipmentList)
+        this.setState({
+          animate:true,
+          listMarginTop:"-76px"
+        })
+        setTimeout( () =>{
+          this.state.okEquipmentList.push(this.state.okEquipmentList[0])
+          this.state.okEquipmentList.push(this.state.okEquipmentList[1])
+          that.state.okEquipmentList.shift(),
+          that.state.okEquipmentList.shift()
+          that.setState({
+            animate:false,
+            listMarginTop:"0"
+          })
+        }
+        ,3000)
+    }
+    }
+  }
   //报警统计
   getWarnStatistic() {
     this.$http
@@ -1194,63 +1253,173 @@ class App extends Component {
 
         <div className="app-content">
           <div className="app-content-left">
-            <div className="swiper-container">
-                <div className="swiper-wrapper">
-                  {
-                    this.state.equipmentListSlice.map((itemMain,intexMain) => {
-                      return(
-                        <div className="swiper-slide" key={intexMain}>
-                        <ul className='app-content-left-ul'>
-                        {
-                          itemMain.map((item,index) => {
-                            return(
-                            <div key={index}>
-                              <li className={item.status == 2 ? "app-content-left-li active" : "app-content-left-li"} style={{display:item.long == 1?'':'none'}}>
+
+        <div className="alerm">
+          <div className="swiper-wrapper">
+            <ul className='app-content-left-ul' style={{zIndex:`100`}}>
+              {
+                this.state.alermEquipmentList.map((item,index) => {
+                  return(
+                    <div className="swiper-slide" key={index}>
+            
+                      <div>
+                          <li className={item.status == 2 ? "app-content-left-li active" : "app-content-left-li"}>
+                            <div className="left">
+                              <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                              <p className="one">
+                              {item.deviceName} <img className={item.status == 2 ? "" : "active1"} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                              </p>
+                              <div className="two">
+                              <MarqueeWrap
+                                  title={item.address || '-'}
+                              />
+                              </div>
+                              <p className="three">设备码 {item.deviceCode}</p>
+                              {/* <p>{item.indicatorList}</p> */}
+                            </div>
+                            <div className="right">
+                              <ul>
+                                {
+                                  item.indicatorList.map((item1,index1) => {
+                                    return(
+                                      (this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?
+                                      <li  key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list active"}>
+                                      <p className={item1.status == 1 ? "one upIcon" : item1.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                      <p className="three">
+                                        <CountUp
+                                          start={0}
+                                          end={item1.indicatorValue}
+                                          decimals={0}
+                                          duration={2.5}
+                                          useEasing={true}
+                                          useGrouping={true}
+                                        />
+                                        <span className="four">{item1.unit}</span></p>
+                                        <p className="five">{item1.statusName?item1.statusName:''}</p>
+                                      </li>:
+                                      <li key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list"}>
+                                      <p className={item.status == 1 ? "one" : item.status == -1 ? "one" : 'one'}>{item1.indicatorName}</p>
+                                      <p className="three">-</p>
+                                      </li>
+                                      )
+                                    })
+                                  }
+                                </ul>
+                            </div>
+                          </li>
+                        </div>
+
+                    </div>
+                  )
+                })
+              }
+            </ul>
+
+                {
+                  this.state.isFold?(
+                    <ul className={this.state.animate?'app-content-left-ul animate':'app-content-left-ul'}  id="scrollList" style={{marginTop:this.state.listMarginTop,zIndex:`-100`,overflow:`hidden`}}>
+                      {
+                        this.state.okEquipmentList.map((item,index) => {
+                          return(
+                              <li key={index} className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
                                 <div className="left">
                                   <img src={require("../../assets/images/cdz.png")}  alt=""/>
-                                  <p className="one">
-                                  {item.deviceName} <img className={item.status == 2 ? "" : "active1"} src={require("../../assets/images/warnMarker.png")} alt=""/>
-                                  </p>
-                                  <div className="two">
+                                  <p className="one"> {item.deviceName}<img className={item.status == 2 ? "" : "active1"}  src={require("../../assets/images/warnMarker.png")} alt=""/></p>
+                                  <div className="two">       
                                   <MarqueeWrap
                                       title={item.address || '-'}
-                                  />
-                                  </div>
-                                  <p className="three">设备码 {item.deviceCode}</p>
-                                  {/* <p>{item.indicatorList}</p> */}
+                                  /></div>
+                                  {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue !="-" ?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue!="-"?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue != "-"?'kw·h':''}</p>:
+                                  <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: - <span>&nbsp;&nbsp;</span>漏电量: - <span>&nbsp;&nbsp;</span> 耗电量: -</p>}
                                 </div>
-                                <div className="right">
-                                  <ul>
-                                    {
-                                      item.indicatorList.map((item1,index1) => {
-                                        return(
-                                          (this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?
-                                          <li  key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list active"}>
-                                          <p className={item1.status == 1 ? "one upIcon" : item1.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
-                                          <p className="three">
-                                            <CountUp
-                                              start={0}
-                                              end={item1.indicatorValue}
-                                              decimals={0}
-                                              duration={2.5}
-                                              useEasing={true}
-                                              useGrouping={true}
-                                            />
-                                            <span className="four">{item1.unit}</span></p>
-                                            <p className="five">{item1.statusName?item1.statusName:''}</p>
-                                          </li>:
-                                          <li key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list"}>
-                                          <p className={item.status == 1 ? "one" : item.status == -1 ? "one" : 'one'}>{item1.indicatorName}</p>
-                                          <p className="three">-</p>
-                                          </li>
-                                          )
-                                        })
-                                      }
-                                    </ul>
-                                </div>
-                              </li>
 
-                                <li className={`${item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"} ${item.status == 2 ? "active2" : ""}` }>
+                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
+                                (                                    
+                                item.indicatorList[0].indicatorValue != '-' ? 
+                                <p className="voltage">
+                                <CountUp
+                                  start={0}
+                                  end={item.indicatorList[0].indicatorValue}
+                                  decimals={0}
+                                  duration={2.5}
+                                  useEasing={true}
+                                  useGrouping={true}
+                                />
+                                <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
+                                </p>: <p className="voltage"></p>)
+                                : ''}
+                                  
+                                {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
+                                (
+                                item.indicatorList[1].indicatorValue != '-' ?                                     
+                                <p className="current">
+                                <CountUp
+                                  start={0}
+                                  end={item.indicatorList[1].indicatorValue}
+                                  decimals={2}
+                                  duration={2.5}
+                                />
+                                <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
+                                </p>:<p className="current">-</p>
+                                )
+                                :<p className="current">-</p>}
+                              </li>
+                          )
+                        })
+                      }
+                    </ul>
+                  ):(
+                    <ul className='app-content-left-ul'>
+                      {
+                        this.state.okEquipmentList.map((item,index) => {
+                          return(
+                            <div>
+                                  <li key={index} className={item.long == 1 ? "app-content-left-li no-show" : "app-content-left-li"}>
+                                    <div className="left">
+                                      <img src={require("../../assets/images/cdz.png")}  alt=""/>
+                                      <p className="one">
+                                      {item.deviceName} <img className={item.status == 2 ? "" : "active1"} src={require("../../assets/images/warnMarker.png")} alt=""/>
+                                      </p>
+                                      <div className="two">
+                                      <MarqueeWrap
+                                          title={item.address || '-'}
+                                      />
+                                      </div>
+                                      <p className="three">设备码 {item.deviceCode}</p>
+                                      {/* <p>{item.indicatorList}</p> */}
+                                    </div>
+                                    <div className="right">
+                                      <ul>
+                                        {
+                                          item.indicatorList.map((item1,index1) => {
+                                            return(
+                                              (this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?
+                                              <li  key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list active"}>
+                                              <p className={item1.status == 1 ? "one upIcon" : item1.status == -1 ? "one lowIcon" : 'one'}>{item1.indicatorName}</p>
+                                              <p className="three">
+                                                <CountUp
+                                                  start={0}
+                                                  end={item1.indicatorValue}
+                                                  decimals={0}
+                                                  duration={2.5}
+                                                  useEasing={true}
+                                                  useGrouping={true}
+                                                />
+                                                <span className="four">{item1.unit}</span></p>
+                                                <p className="five">{item1.statusName?item1.statusName:''}</p>
+                                              </li>:
+                                              <li key={index1} className={item1.status == 0 ? "left-supervise-list" : "left-supervise-list"}>
+                                              <p className={item.status == 1 ? "one" : item.status == -1 ? "one" : 'one'}>{item1.indicatorName}</p>
+                                              <p className="three">-</p>
+                                              </li>
+                                              )
+                                            })
+                                          }
+                                        </ul>
+                                    </div>
+                                  </li>
+
+                                  <li className={item.long == 1 ? "app-content-left-li-1 no-show" : "app-content-left-li-1"}>
                                   <div className="left">
                                       <img src={require("../../assets/images/cdz.png")}  alt=""/>
                                       <p className="one"> {item.deviceName}<img className={item.status == 2 ? "" : "active1"}  src={require("../../assets/images/warnMarker.png")} alt=""/></p>
@@ -1258,12 +1427,14 @@ class App extends Component {
                                       <MarqueeWrap
                                           title={item.address || '-'}
                                       /></div>
-                                      {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue?'kw·h':''}</p>:
+                                      {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: {item.indicatorList[2].indicatorValue}{item.indicatorList[2].indicatorValue !="-" ?'°C':''} <span>&nbsp;&nbsp;</span>漏电量: {item.indicatorList[3].indicatorValue}{item.indicatorList[3].indicatorValue!="-"?'mA':''} <span>&nbsp;&nbsp;</span> 耗电量: {item.indicatorList[4].indicatorValue}{item.indicatorList[4].indicatorValue != "-"?'kw·h':''}</p>:
                                       <p className="three">设备码 {item.deviceCode} <span>&nbsp;&nbsp;</span> 电缆温度: - <span>&nbsp;&nbsp;</span>漏电量: - <span>&nbsp;&nbsp;</span> 耗电量: -</p>}
                                     
                                     </div>
 
-                                    {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')?  
+                                    {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
+                                    (                                    
+                                    item.indicatorList[0].indicatorValue != '-' ? 
                                     <p className="voltage">
                                     <CountUp
                                       start={0}
@@ -1274,37 +1445,34 @@ class App extends Component {
                                       useGrouping={true}
                                     />
                                     <span style={{fontSize:`10px`}}>{item.indicatorList[0].indicatorValue?'V':''}</span>
-                                    </p>: ''}
+                                    </p>: <p className="voltage"></p>)
+                                    : ''}
                                     
-
                                     {(this.state.footerInfoStatus != 'notBind' && this.state.footerInfoStatus != 'serverPast')? 
-                                    <p className="current">
-                                    <CountUp
-                                      start={0}
-                                      end={item.indicatorList[1].indicatorValue}
-                                      decimals={2}
-                                      duration={2.5}
-                                    />
-                                    <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
-                                    </p>:<p className="current">-</p>}
-        
-
+                                    (
+                                      item.indicatorList[1].indicatorValue != '-' ?                                     
+                                      <p className="current">
+                                      <CountUp
+                                        start={0}
+                                        end={item.indicatorList[1].indicatorValue}
+                                        decimals={2}
+                                        duration={2.5}
+                                      />
+                                      <span style={{fontSize:`10px`}}>{item.indicatorList[1].indicatorValue?'A':''}</span>
+                                      </p>:<p className="current">-</p>
+                                      )
+                                      :<p className="current">-</p>}
                                 </li>
-                     
-
-
                             </div>
-                            )
-                          })
-                              }
-                          </ul>
-                        </div>
-                      )
-                    })
-                  }
-                </div>
+                          )
+                        })
+                      }
+                    </ul>
+                  )
+                }          
             </div>
           </div>
+        </div>
 
           <div className="app-content-right">
             <div className="warn-info-title">报警信息统计</div>
