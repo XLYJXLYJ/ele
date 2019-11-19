@@ -210,10 +210,12 @@ class App extends Component {
       yunPingCode: "", // 云屏设备码
       equipmentList: [], //设备列表
       equipmentListSlice:[], //处理后的设备列表数据
+      alermEquipmentList:[], //报警的设备列表数据
       warnTimes:'',//报警次数
       effectiveDeviceNum:'', //报警设备总数
       warnDeviceNum:'', //有效设备报警总数
       actionEquipmentListIndex: 0, // 选中当前设备
+      alermActionEquipmentListIndex: 0, // 选中报警当前设备
       warnStatistic: [], // 报警统计
     }
     // 18414220100155144  18414220100155130 huanjingjiance
@@ -232,9 +234,9 @@ class App extends Component {
 
   componentDidMount(){
     new Swiper('.swiper-container', {
-      direction: 'vertical',
-      autoplay:false,
-      delay:60000,
+      // direction: 'vertical',
+      autoplay:true,
+      // delay:60000,
       slidesPerView: 1,
       spaceBetween: 0,
       observer: true,
@@ -256,12 +258,12 @@ class App extends Component {
       var height = this.proportionDom.current.offsetHeight+20
     }
 
-    let indexVal = this.state.equipmentList[this.state.actionEquipmentListIndex].orderProductList //选中值
+    let indexVal = this.state.equipmentList[this.state.alermActionEquipmentListIndex].orderProductList //选中值
     let total = Object.assign([], this.state.equipmentList).reduce((a, b) => {
       return a + b.alarmTimes
     }, 0)
 
-    let copyData = JSON.parse(JSON.stringify(this.state.equipmentList))
+    let copyData = JSON.parse(JSON.stringify(this.state.alermEquipmentList))
     let equipmentList = [];
     copyData.map(item =>{
       if(item.alarmTimes==0 || item.bindStatus==4){ //报警次数为0 或 未绑定
@@ -615,10 +617,10 @@ class App extends Component {
     if (this.equipmentListTime) {
       return null
     }
-    let updateTime = this.state.equipmentList.length == 1 ? 60 : 5
+    let updateTime = this.state.equipmentList.length == 1 ? 60 : 60
     //切换时间
     // let updateTime = 200
-    this.updateDate('init')
+    // this.updateDate('init')
     this.equipmentListTime = setInterval(() => {
       if (
         this.state.actionEquipmentListIndex <
@@ -628,20 +630,66 @@ class App extends Component {
           {
             actionEquipmentListIndex: (this.state.actionEquipmentListIndex += 1)
           },
-          this.updateDate
+          // this.updateDate
         )
       } else {
         this.setState(
           {
             actionEquipmentListIndex: 0
           },
-          this.updateDate
+          // this.updateDate
         )
       }
 
     }, 1000 * updateTime)
 
   }
+
+    // 初始化报警设备列表
+    alermInitEquipmentList() {
+      // 没有数据情况下
+      if (!this.state.alermEquipmentList.length) {
+        this.setState({
+          alermActionEquipmentListIndex: 0,
+          alermEquipmentList: []
+        })
+        window.clearInterval(this.alermEquipmentListTime)
+  
+        this.alermEquipmentListTime = null
+        return null
+      }
+      if (this.alermEquipmentListTime) {
+        return null
+      }
+      let updateTime = this.state.alermEquipmentList.length == 1 ? 60 : 60
+      //切换时间
+      // let updateTime = 200
+      this.updateDate('init')
+      this.alermEquipmentListTime = setInterval(() => {
+        if (
+          this.state.alermActionEquipmentListIndex <
+          this.state.alermEquipmentList.length - 1
+        ) {
+          this.setState(
+            {
+              alermActionEquipmentListIndex: (this.state.alermActionEquipmentListIndex += 1)
+            },
+            this.updateDate
+          )
+        } else {
+          this.setState(
+            {
+              alermActionEquipmentListIndex: 0
+            },
+            this.updateDate
+          )
+        }
+  
+      }, 1000 * updateTime)
+  
+    }
+
+    
 
   //更新接口数据
   updateDate(type) {
@@ -974,10 +1022,20 @@ class App extends Component {
           //       }
           //     })
           // })
+          let alermEquipmentList = []
+          data.deviceList.map((item,index) => {
+            if(item.status == 2){
+              alermEquipmentList.push(item)
+            }
+          })
+
+          console.log(alermEquipmentList)
+
           this.setState(
             {
               equipmentListSlice: curSwiperDataArr,
               equipmentList: data.deviceList,
+              alermEquipmentList:alermEquipmentList,
               warnTimes:data.warnTimes,
               effectiveDeviceNum:data.effectiveDeviceNum,
               warnDeviceNum:data.warnDeviceNum
@@ -996,7 +1054,8 @@ class App extends Component {
                     }
                 }
                 this.initEquipmentList()
-                if(this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0){
+                this.alermInitEquipmentList()
+                if(this.state.alermEquipmentList.length > 0 && this.state.alermEquipmentList[this.state.alermActionEquipmentListIndex].alarmTimes > 0){
                   this.initProportion24th()
                 }
             }
@@ -1072,8 +1131,8 @@ class App extends Component {
   getWarnStatistic() {
     this.$http
       .post("/rest/elec/getIndicatorWarnTimes", {
-        orderProductList: this.state.equipmentList[
-          this.state.actionEquipmentListIndex
+        orderProductList: this.state.alermEquipmentList[
+          this.state.alermActionEquipmentListIndex
         ].orderProductList,
         deviceCode: this.deviceCode
       })
@@ -1304,7 +1363,7 @@ class App extends Component {
             </div>
             <div className="warn-24th-title">24 小时报警次数占比图</div>
             <div className="warn-24th-chart">
-              {this.state.equipmentList && this.state.equipmentList.length > 0 && this.state.equipmentList[this.state.actionEquipmentListIndex].alarmTimes > 0 ?
+              {this.state.alermEquipmentList && this.state.alermEquipmentList.length > 0 && this.state.alermEquipmentList[this.state.alermActionEquipmentListIndex].alarmTimes > 0 ?
                 <div ref={this.proportionDom} id="proportion-24th" /> : "-"
               }
             </div>
