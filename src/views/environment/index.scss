@@ -216,7 +216,7 @@ body,
       margin: 0 px-rem(100) 0 px-rem(120);
       background: #222326;
       .animate{
-        transition: all 3s;
+        transition: all 0.05s;
       }
       .app-content-left-ul{
         width: 100%;
@@ -301,7 +301,7 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1214);
+              right: px-rem(230);
               top: px-rem(70);
               font-family: AvenirNext;
               span{
@@ -320,7 +320,7 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1330);
+              right: px-rem(10);
               top: px-rem(70);
               font-family: AvenirNext;
               span{
@@ -479,7 +479,7 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1134);
+              right: px-rem(230);
               top: px-rem(70);
 
               span{
@@ -498,7 +498,7 @@ body,
               font-weight: 400;
               color: #fff;
               position: absolute;
-              left: px-rem(1300);
+              right: px-rem(10);
               top: px-rem(70);
               span{
                 // font-size: px-rem(30);
